@@ -17,7 +17,7 @@ import java.util.List;
 
 public class VideoListAdapter extends BaseAdapter {
 
-    private Context     mContext;
+    private Context mContext;
     private List<Video> mVideos;
 
     public VideoListAdapter(Context context, List<Video> videos) {
@@ -47,6 +47,7 @@ public class VideoListAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item_video, parent, false);
             holder = new ViewHolder(convertView);
+            convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
@@ -54,7 +55,11 @@ public class VideoListAdapter extends BaseAdapter {
         Video video = mVideos.get(position);
         if (video != null) {
             if (holder.imgThumbnail != null) {
-                Glide.with(mContext).load(video.getThumbnailUrl()).into(holder.imgThumbnail);
+                Glide.with(mContext).load(video.getThumbnailUrl()).override(600,200).into(holder.imgThumbnail);
+            }
+
+            if(holder.tvTitle != null){
+                holder.tvTitle.setText(video.getTitle());
             }
         }
 
@@ -81,10 +86,12 @@ public class VideoListAdapter extends BaseAdapter {
 
     private class ViewHolder {
         ImageView imgThumbnail;
-        TextView  tvTitle;
+        TextView tvTitle;
 
         ViewHolder(View itemView) {
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
+            imgThumbnail = (ImageView) itemView.findViewById(R.id.imgThumbnail);
         }
     }
 }
+
